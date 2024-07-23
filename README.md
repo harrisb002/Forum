@@ -1,6 +1,6 @@
 ## Basic Forum using PostgreSQL
 
-### Postgres Shell Command Nots
+### Postgres Shell Command Notes
 - `\?` : Gives examples of commands
 - `\!` : Goes back to regualr terminal commands 
 - `\c` : Change the current db
@@ -45,7 +45,23 @@
 `SET title='(Solved) How do I use Postgres?'`
 `WHERE post_id=1;` : MUST USE `WHERE` or it will update EVERYTHING!
 
-NOTES: 
+---
+NOTES - PRIMARY KEY
+- `CREATE TABLE users (`
+`user_id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,`
+`username varchar(30) UNIQUE,`
+`email varchar(255) UNIQUE);`
+- 
+- ECT: `UNIQUE` does not have the contraint of being `NOT NULL` while in contrast Primary Keys do.
+- Surregate Keys and Natural Keys.
+
+--- 
+Start a Session: `psql -h localhost -d forum -U postgres` 
+SQL from a File: `\i <file>` 
+
+
+---
+NOTES - GENERAL: 
 - `ALTER` is for DDL used to change the structure of the table, whereas `UPDATE` is DML used to change the actual data in the table.
 - Similiar to `DELETE` and `DROP` where DELETE is used to delete rows which is Data Manipulation, whereas DROP is used to drop tables.
 
