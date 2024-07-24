@@ -371,23 +371,25 @@
 -- (1, 1, 'Great perspective. I never thought of it that way.', '2023-02-23 17:17:46'),
 -- (2, 3, 'Good post. I look forward to more from you.', '2023-01-31 18:26:55'),
 -- (3, 1, 'Thanks for sharing your thoughts. I enjoyed reading this.', '2023-05-15 20:30:04');
-CREATE VIEW
-    latest_comments AS
-SELECT
-    users.username,
-    posts.title AS "post title",
-    posters.username AS "post author",
-    comments.body,
-    comments.created_at
-FROM
-    comments
-    INNER JOIN users ON comments.user_id = users.user_id
-    INNER JOIN posts ON comments.post_id = posts.post_id
-    INNER JOIN users AS posters ON posts.user_id = posters.user_id
-ORDER BY
-    comments.created_at DESC
-LIMIT
-    5;
+-- --
+-- --
+-- CREATE OR REPLACE VIEW
+--     latest_comments AS
+-- SELECT
+--     users.username,
+--     posts.title AS "post title",
+--     posters.username AS "post author",
+--     comments.body,
+--     comments.created_at
+-- FROM
+--     comments
+--     INNER JOIN users ON comments.user_id = users.user_id
+--     INNER JOIN posts ON comments.post_id = posts.post_id
+--     INNER JOIN users AS posters ON posts.user_id = posters.user_id
+-- ORDER BY
+--     comments.created_at DESC
+-- LIMIT
+--     5;
 -- --
 -- --
 -- SELECT
@@ -396,15 +398,77 @@ LIMIT
 --     latest_comments;
 -- --
 -- --
-
+-- CREATE TABLE
+--     IF NOT EXISTS follows (
+--         follow_id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+--         user_id int NOT NULL REFERENCES users (user_id),
+--         following_id int NOT NULL REFERENCES users (user_id),
+--         UNIQUE (user_id, following_id)
+--     );
 -- --
 -- --
+-- INSERT INTO
+--     follows (user_id, following_id)
+-- VALUES
+--     (1, 2),
+--     (1, 3),
+--     (2, 1),
+--     (3, 2);
+-- --
+-- -- Get all accounts user_id 1 follows
+-- SELECT follows.user_id, users.username AS "follows" FROM follows
+-- JOIN users ON follows.following_id = users.user_id
+-- WHERE follows.user_id = 1;
 -- --
 -- --
+-- SELECT * FROM users;
+-- SELECT * FROM follows;
+-- -- For Reference1: 
+-- -- benH  follows nickM
+-- -- benH  follows JoshL
+-- -- nickM follows benH
+-- -- JoshL follows nickM
+-- -- Now creating Reference1 View
+-- CREATE
+-- OR REPLACE VIEW following AS
+-- SELECT
+--     u1.username AS username,
+--     u2.username AS "following"
+-- FROM
+--     follows AS f
+--     JOIN users AS u1 ON f.user_id = u1.user_id
+--     JOIN users AS u2 ON f.following_id = u2.user_id;
+-- -- For Reference2: 
+-- -- nickM followed by benH
+-- -- JoshL followed by benH
+-- -- benH  followed  by nickM 
+-- -- nickM followed by JoshL 
+-- -- Now creating Reference2 View 
+-- CREATE
+-- OR REPLACE VIEW followers AS
+-- SELECT
+--     u1.username AS username,
+--     u2.username AS "followed by"
+-- FROM
+--     follows AS f
+--     JOIN users AS u1 ON f.following_id = u1.user_id
+--     JOIN users AS u2 ON f.user_id = u2.user_id;
 -- --
 -- --
--- --
--- --
+SELECT
+    *
+FROM
+    following
+WHERE
+    username = 'benH';
+-- 
+-- 
+SELECT
+    *
+FROM
+    followers
+WHERE
+    username = 'benH';
 -- --
 -- --
 -- --
