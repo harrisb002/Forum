@@ -455,20 +455,102 @@
 --     JOIN users AS u2 ON f.user_id = u2.user_id;
 -- --
 -- --
-SELECT
-    *
-FROM
-    following
-WHERE
-    username = 'benH';
--- 
--- 
-SELECT
-    *
-FROM
-    followers
-WHERE
-    username = 'benH';
+-- SELECT
+--     *
+-- FROM
+--     following
+-- WHERE
+--     username = 'benH';
+-- -- 
+-- -- 
+-- SELECT
+--     *
+-- FROM
+--     followers
+-- WHERE
+--     username = 'benH';
+-- --
+-- -- Creating table with Composite Primary Key instead of Surrogate Key
+-- CREATE TABLE
+--     IF NOT EXISTS followsComp (
+--         user_id int NOT NULL REFERENCES users (user_id),
+--         following_id int NOT NULL REFERENCES users (user_id),
+--         PRIMARY KEY (user_id, following_id) -- Uses a Composite Key
+--     );
+-- --
+-- --
+-- INSERT INTO
+--     followsComp (user_id, following_id)
+-- VALUES
+--     (1, 2),
+--     (1, 3),
+--     (2, 1),
+--     (3, 2);
+-- --
+-- --
+-- CREATE
+-- OR REPLACE VIEW followersComp AS
+-- SELECT
+--     u1.username AS username,
+--     u2.username AS "followed by"
+-- FROM
+--     followsComp AS f
+--     JOIN users AS u1 ON f.following_id = u1.user_id
+--     JOIN users AS u2 ON f.user_id = u2.user_id;
+-- --
+-- --
+-- SELECT
+--     *
+-- FROM
+--     followersComp
+-- WHERE
+--     username = 'benH';
+-- --
+-- -- 
+-- SELECT
+--     *
+-- FROM
+--     followsComp
+-- WHERE
+--     user_id = 1
+--     AND following_id = 2;
+-- --
+-- -- Using previoius Surrogate Key for this example to demostrate usefullness 
+-- CREATE TABLE
+--     IF NOT EXISTS follow_notifications (
+--         notification_id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+--         follow_id int NOT NULL REFERENCES follows (follow_id),
+--         notification_text varchar(255) NOT NULL
+--     );
+-- --
+-- --
+-- INSERT INTO
+--     follow_notifications (follow_id, notification_text)
+-- VALUES
+--     (1, 'WOW look you followed who');
+-- --
+-- --
+-- -- Now demostrating the same thing using a Composite Key (More Difficult!) 
+-- CREATE TABLE
+--     IF NOT EXISTS follow_notificationsComp (
+--         notification_id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+--         user_id int NOT NULL,
+--         following_id int NOT NULL,
+--         notification_text varchar(255) NOT NULL,
+--         FOREIGN KEY (user_id, following_id) REFERENCES followsComp (user_id, following_id)
+--     );
+-- --
+-- --
+-- INSERT INTO
+--     follow_notificationsComp (following_id, user_id, notification_text)
+-- VALUES
+--     (1, 2, 'WOW look you followed who');
+-- --
+-- --
+-- SELECT * FROM follow_notificationsComp;
+-- --
+-- --
+
 -- --
 -- --
 -- --
