@@ -66,8 +66,19 @@ NOTES - GENERAL:
 - Similiar to `DELETE` and `DROP` where DELETE is used to delete rows which is Data Manipulation, whereas DROP is used to drop tables.
 
 - `SET NULL`: If the parent row is deleted then the child row is orpaned (set to null) instead of being deleted as seen in `ON DELETE CASCADE`
-
-### Other Notes
 ---
+
+#### NOTES
 - DDL: Data Definition Language = Focuses on the defined structure of the db
--  DML: Data Manipulation Language = CRUD capabilities
+-  DML: Data Manipulation Language = CRUD capabilities 
+--- 
+
+DDL includes the following: 
+- CREATE
+- DROP
+- ALTER
+
+DML includes the following: 
+- SELECT
+- UPDATE
+- INSERT
