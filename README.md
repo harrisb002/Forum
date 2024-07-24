@@ -65,6 +65,8 @@ NOTES - GENERAL:
 - `ALTER` is for DDL used to change the structure of the table, whereas `UPDATE` is DML used to change the actual data in the table.
 - Similiar to `DELETE` and `DROP` where DELETE is used to delete rows which is Data Manipulation, whereas DROP is used to drop tables.
 
+- `SET NULL`: If the parent row is deleted then the child row is orpaned (set to null) instead of being deleted as seen in `ON DELETE CASCADE`
+
 ### Other Notes
 ---
 - DDL: Data Definition Language = Focuses on the defined structure of the db
