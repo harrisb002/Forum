@@ -83,20 +83,18 @@ NOTES - GENERAL:
 
 #### NOTES
 
-- DDL: Data Definition Language = Focuses on the defined structure of the db
-- DML: Data Manipulation Language = CRUD capabilities
-
----
+- DDL: Data Definition Language 
+- DML: Data Manipulation Language 
 
 #### DDL includes the following:
-- CREATE
-- DROP
-- ALTER
+- `CREATE`
+- `DROP`
+- `ALTER`
 
 #### DML includes the following:
-- SELECT
-- UPDATE
-- INSERT
+- `SELECT`
+- `UPDATE`
+- `INSERT`
 
 ---
 
