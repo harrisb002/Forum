@@ -13,3 +13,10 @@ Starting project:
 - Update Connection string with updated info using Postgres
 - `npx prisma migrate dev`: Updates changes in databse structure.
 - `npx prisma generate`: Creates the code that interacts with the DB.
+- `npx prisma migrate reset`: Resets the DB, Delets all data in DB!
+-
+
+#### General Notes
+
+- Any capilization of table names need to be in quotes or else it wont be recognized, wierd I know....
+- Anytime you create a new schema, you must create a new client! using `npx prisma generate`

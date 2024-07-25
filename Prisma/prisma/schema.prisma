@@ -14,7 +14,12 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement()) // Creates the PK
+  // Creates the PK
+  id       Int    @id @default(autoincrement()) @map("user_id") // Can column-level change names
   email    String @unique
   username String @unique
+  name     String
+
+  // Or change in the table-level
+  @@map("users") // Totally optional
 }
