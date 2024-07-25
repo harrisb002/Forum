@@ -19,4 +19,4 @@ Starting project:
 #### General Notes
 
 - Any capilization of table names need to be in quotes or else it wont be recognized, wierd I know....
-- Anytime you create a new schema, you must create a new client! using `npx prisma generate`
+- Anytime you create a new schema, you must create a new client! Using `npx prisma generate`
