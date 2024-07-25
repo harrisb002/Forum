@@ -26,14 +26,40 @@ model Trainer {
 }
 
 model Pokemon {
-  id        Int      @id @default(autoincrement()) @map("post_id")
+  id        Int            @id @default(autoincrement()) @map("post_id")
   title     String
   body      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at") // @updatedAt is on the Prisma level, not DB level
-  trainerId Int?     @map("trainer_id") // This is actually stored in the database
+  createdAt DateTime       @default(now()) @map("created_at")
+  updatedAt DateTime       @updatedAt @map("updated_at") // @updatedAt is on the Prisma level, not DB level
+  trainerId Int            @map("trainer_id") // This is actually stored in the database (? after type can be used to signify its not required)
   // This describes the relationship to trainer to reference as the FK
-  Owner     Trainer? @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  owner     Trainer        @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  moves     PokemonMoves[]
 
   @@map("pokemon")
+}
+
+// Creating a many-many relationship to Pokemon to allow moves to be applied to them
+// Thus a move can be used by many pokemon and a pokemon can have many moves
+model Move {
+  id    Int            @id @default(autoincrement()) @map("move_id")
+  name  String
+  moves PokemonMoves[]
+
+  @@map("moves")
+}
+
+// Creating Intermediate table to associate Pokemon with Moves
+model PokemonMoves {
+  id        Int      @id @default(autoincrement()) @map("pokemon_move_id")
+  pokemonId Int      @map("pokemon_id")
+  moveId    Int      @map("move_id")
+  addedAt   DateTime @default(now()) @map("added_at")
+  // These properties will allow access to the associated data in the code
+  // They dont actually get added to the DB tables, they just allow for the relationship
+  pokemon   Pokemon  @relation(fields: [pokemonId], references: [id], onDelete: Cascade)
+  move      Move     @relation(fields: [moveId], references: [id], onDelete: Cascade)
+
+  @@unique([pokemonId, moveId]) // Adds unique constraint to surrogate key
+  @@map("pokemon_moves")
 }

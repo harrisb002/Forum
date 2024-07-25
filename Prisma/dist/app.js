@@ -78,14 +78,49 @@ const prisma = new PrismaClient();
 // pokemon.forEach((pokemon) => {
 //   console.log(pokemon.title);
 // });
-const trainer = await prisma.trainer.findUnique({
-    where: { username: "OG Trainer" },
-    include: { pokemon: true }, // SO COOL, accessing pokemon through the trainer using the ORM
+// const trainer = await prisma.trainer.findUnique({
+//   where: { username: "OG Trainer" },
+//   include: { pokemon: true }, // SO COOL, accessing pokemon through the trainer using the ORM
+// });
+// // Needed in TS just in case trainer is null
+// if (!trainer) {
+//   process.exit(1);
+// }
+// trainer.pokemon.forEach((pokemon) => {
+//   console.log(pokemon.title);
+// });
+// // Finding the Brock trainer
+// const trainer = await prisma.trainer.findFirst({ where: { name: "Brock" } });
+// if (!trainer) {
+//   process.exit(1);
+// }
+// // Setting the new pokemon to Brock Trainer
+// const pokemon = await prisma.pokemon.create({
+//   data: {
+//     title: "Lucario",
+//     body: "Fighting/Steel-type",
+//     trainerId: trainer.id,
+//     moves: {
+//       // Can also create the move at the SAME TIME! Pretty cool
+//       create: [
+//         // Must move through the intermediate PokemonMoves table using, create
+//         { move: { create: { name: "Aura Sphere" } } },
+//         { move: { create: { name: "Bone Rush" } } },
+//       ],
+//     },
+//   },
+//   // Can also define other properties related to the newly created move
+//   // This will eagerly load them, meaning load them up front and be able to access them immediately
+//   include: { moves: { include: { move: true } }, owner: true },
+// });
+// console.log(pokemon);
+const pokemon = await prisma.pokemon.findFirst({
+    where: { id: 12 },
+    include: { moves: { include: { move: true } } },
 });
-// Needed in TS just in case trainer is null
-if (!trainer) {
+if (!pokemon) {
     process.exit(1);
 }
-trainer.pokemon.forEach((pokemon) => {
-    console.log(pokemon.title);
+pokemon.moves.forEach((pokemon) => {
+    console.log(pokemon.move.name);
 });
