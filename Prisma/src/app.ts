@@ -80,9 +80,10 @@ const prisma = new PrismaClient();
 //     { title: "Machamp", body: "Four-armed fighter", trainerId: trainer.id },
 //     { title: "Magikarp", body: "Weak fish Pokémon", trainerId: trainer.id },
 //   ],
-
 // });
+
 // console.log("rows inserted", response);
+
 // const pokemon = await prisma.pokemon.findMany({
 //   where: { trainerId: 1 },
 // });
@@ -147,6 +148,147 @@ const prisma = new PrismaClient();
 //   console.log(pokemon.move.name);
 // });
 
-const trainer = await prisma.trainer.findMany();
+// const trainers = await prisma.trainer.findMany({
+//   // include: {
+//   //   pokemon: {
+//   //     include: {
+//   //       moves: {
+//   //         include: {
+//   //           move: true,
+//   //         },
+//   //       },
+//   //     },
+//   //   },
+//   //   _count: true,
+//   // },
+//   where: {
+//     pokemon: {
+//       some: { moves: { some: {} } }, // Get only those who have at least 1 pokemon and the pokemon has at least one move
+//     },
+//   },
+//   // Gets the properties I want just as in a regualar select clause
+//   // Cannot be in same nesting as include as shown above so must define what to include in select
+//   select: {
+//     username: true,
+//     pokemon: {
+//       select: {
+//         title: true,
+//       },
+//     },
+//   },
+// });
 
-console.log(trainer);
+// // console.log(trainers);
+
+// console.log(JSON.stringify(trainers, null, 2));
+
+// // Working with filters
+// // Filter for trainers with no pokemon
+// const trainers = await prisma.trainer.findMany({
+//   where: { pokemon: { none: {} } },
+// });
+
+// // Filter for trainers with no pokemon
+// const trainers = await prisma.trainer.findMany({
+//   where: { pokemon: { every: { owned: false } } }, // Every pokemon has the property set to ''
+// });
+
+// // Get the first trainer without a pokemon
+// const trainer = await prisma.trainer.findFirst({
+//   where: { pokemon: { none: {} } },
+// });
+
+// if (!trainer) {
+//   console.log("All trainers have pokemon! Exiting...");
+//   process.exit(1);
+// }
+
+// console.log("Trainer with no pokemon: ", trainer);
+
+// // Create a pokemon for the trainer that doesnt yet have one
+// const pokemon = await prisma.pokemon.create({
+//   data: {
+//     title: "Squirtle",
+//     body: "Water turtle Pokémon",
+//     trainerId: trainer.id,
+//   },
+// });
+
+// console.log("Pokemon created: ", pokemon);
+
+// const pokemons = await prisma.pokemon.findMany({
+//   where: {
+//     moves: { none: {} },
+//   },
+//   include: {
+//     owner: true,
+//   },
+// });
+
+// // Retrieving all pokemon that dont have any moves
+// console.log("Pokemon without any moves: ", pokemons);
+
+// // Finding trainers with username that starts with "P"
+// const trainers = await prisma.trainer.findMany({
+//   where: { username: { startsWith: "P", mode: "insensitive" } },
+//   include: { pokemon: true },
+// });
+
+// console.log(
+//   trainers.forEach((trainer) => {
+//     console.log("Trainer: ", trainer.name);
+//     console.log(trainer.pokemon);
+//   })
+// );
+
+// // Going the other way to find trainers with username that starts with "P"
+// // But now through the Pokemon in which may be owned by them.
+// const pokemon = await prisma.pokemon.findMany({
+//   where: {
+//     owner: {
+//       is: {
+//         username: { startsWith: "P", mode: "insensitive" },
+//       },
+//     },
+//   },
+//   include: {
+//     owner: true,
+//   },
+// });
+
+// // Update a trainer to be verified
+// const pokemon = (await prisma.pokemon.findFirst())!; // Can do this to tell TS that it wont be null. Dangerous...
+// console.log("Pokemon to verify: ", pokemon);
+
+// // Updating the pokemon to be verified
+// const result = await prisma.pokemon.update({
+//   where: { id: pokemon.id },
+//   data: {
+//     owner: {
+//       update: {
+//         verified: true,
+//       },
+//     },
+//   },
+//   include: {
+//     owner: true,
+//   },
+// });
+
+// const pokemon = await prisma.pokemon.findMany({
+//   where: {
+//     owner: {
+//       is: {
+//         // Grab all pokemon that are verified
+//         verified: true,
+//       },
+//     },
+//   },
+//   include: {
+//     owner: true,
+//   },
+// });
+
+// console.log(pokemon);
+
+const commentbreak = 0;

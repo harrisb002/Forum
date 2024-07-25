@@ -19,6 +19,7 @@ model Trainer {
   email    String    @unique
   username String    @unique
   name     String
+  verified Boolean   @default(false)
   pokemon  Pokemon[] // This does not effect database, this is for the client code
 
   // Or change in the table-level
@@ -29,6 +30,7 @@ model Pokemon {
   id        Int            @id @default(autoincrement()) @map("post_id")
   title     String
   body      String
+  owned     Boolean        @default(false)
   createdAt DateTime       @default(now()) @map("created_at")
   updatedAt DateTime       @updatedAt @map("updated_at") // @updatedAt is on the Prisma level, not DB level
   trainerId Int            @map("trainer_id") // This is actually stored in the database (? after type can be used to signify its not required)
