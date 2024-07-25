@@ -199,7 +199,6 @@
 -- FROM users
 -- LEFT JOIN posts
 -- ON posts.user_id = users.user_id;
--- 
 -- -- Now if we orphan a post to have no corresponding user we can show the same the other way
 -- -- This only works becuase the user_id in the posts table is nullable! 
 -- UPDATE posts
@@ -304,8 +303,6 @@
 -- FROM
 --     users AS referred
 --     LEFT JOIN users AS referrer ON referred.referred_by = referrer.user_id;
---
--- 
 -- CREATE OR REPLACE VIEW
 --     referrals AS
 -- SELECT
@@ -550,16 +547,101 @@
 -- SELECT * FROM follow_notificationsComp;
 -- --
 -- --
+-- CREATE TABLE IF NOT EXISTS
+--     accounts (
+--         account_id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+--         amount decimal(15, 2) NOT NULL
+--     );
+-- --
+-- --
+-- INSERT INTO
+--     accounts (amount)
+-- VALUES
+--     (1000.00),
+--     (1000.00)
+-- --
+-- -- Starting a Transaction
+-- BEGIN;
 
+-- -- subtract 500 from account 1
+-- UPDATE accounts
+-- SET
+--     amount = amount - 500
+-- WHERE
+--     account_id = 1;
+-- -- add 500 to account 2
+-- UPDATE accounts
+-- SET
+--     amount = amount + 500
+-- WHERE
+--     account_id = 2;
+-- COMMIT;
 -- --
--- --
--- --
--- --
--- --
--- --
--- --
--- --
--- --
--- --
--- --
--- --
+-- -- Varaibles using dollar quoting
+-- DO 
+-- $$ 
+-- DECLARE 
+--     transfer_amount numeric := 100;
+-- BEGIN
+-- -- subtract 500 from account 1
+-- UPDATE accounts
+-- SET
+--     amount = amount - transfer_amount
+-- WHERE
+--     account_id = 1;
+-- -- add 500 to account 2
+-- UPDATE accounts
+-- SET
+--     amount = amount + transfer_amount
+-- WHERE
+--     account_id = 2;
+-- END;
+-- $$
+--
+-- Using Procedures
+-- CREATE OR REPLACE PROCEDURE transfer (
+--     from_account_id INT, 
+--     to_account_id INT, 
+--     transfer_amount NUMERIC
+-- )
+-- LANGUAGE plpgsql 
+-- AS $$ 
+-- BEGIN
+--     -- subtract 500 from account 1
+--     UPDATE accounts
+--     SET
+--         amount = amount - transfer_amount
+--     WHERE
+--         account_id = from_account_id;
+
+--     -- add 500 to account 2
+--     UPDATE accounts
+--     SET
+--         amount = amount + transfer_amount
+--     WHERE
+--         account_id = to_account_id;
+-- END;
+-- $$
+--
+-- Invoke the procedure
+CALL transfer(1, 2, 200)
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--

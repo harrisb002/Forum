@@ -103,15 +103,14 @@ NOTES - GENERAL:
 - Check contraints do NOT have this capability and one must drop the constraint to add a new field.
 - Lookup tables do add another table which is more data being stored.
 - Lookup tables are also available for all RDMS that allow for FK's which is all of them.
-- Check constraints are not available for all RDMS's
-- Loading all possible check contraints values is also a difficulty (at least in Postgres)
-- Check contraints are simplier however, as joins are not needed as they are in Lookup tables
+- Check constraints are not available for all RDMS's.
+- Loading all possible check contraints values is also a difficulty (at least in Postgres).
+- Check contraints are simplier however, as joins are not needed as they are in Lookup tables.
 
 ---
-
-
-
-
-
-
-
+More Notes: 
+- 3 tables are needed to represent a many-to-many relationship between two different tables.
+- In relational databases, 2 tables are needed to represent a self referencing many-to-many relationship.
+- One purpose of creating a viewis to provide a simplified, virtual representation of one or more tables.
+- If one decides to use a surrogate key instead of a composite primary key, then one should add a UNIQUE constraint to the combination of the composite key columns.
+- No constraints are needed for a zero-or-more cardinality/modality.
