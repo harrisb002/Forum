@@ -114,13 +114,15 @@ const prisma = new PrismaClient();
 //   include: { moves: { include: { move: true } }, owner: true },
 // });
 // console.log(pokemon);
-const pokemon = await prisma.pokemon.findFirst({
-    where: { id: 12 },
-    include: { moves: { include: { move: true } } },
-});
-if (!pokemon) {
-    process.exit(1);
-}
-pokemon.moves.forEach((pokemon) => {
-    console.log(pokemon.move.name);
-});
+// const pokemon = await prisma.pokemon.findFirst({
+//   where: { id: 12 },
+//   include: { moves: { include: { move: true } } },
+// });
+// if (!pokemon) {
+//   process.exit(1);
+// }
+// pokemon.moves.forEach((pokemon) => {
+//   console.log(pokemon.move.name);
+// });
+const trainer = await prisma.trainer.findMany();
+console.log(trainer);

@@ -1,27 +1,25 @@
 ## Basic Forum using PostgreSQL
 
 ### Postgres Shell Command Notes
-
-- `\?` : Gives examples of commands
-- `\!` : Goes back to regualr terminal commands
-- `\c` : Change the current db
+- `\?`  : Gives examples of commands
+- `\!`  : Goes back to regualr terminal commands
+- `\c`  : Change the current db
+- `\l`  : Lists all Databases
 - `\dt` : Lists the tables/relations
 - `\dn` : Lists all schemas
 - `\di` : Lists all indexes
-- `\q` : Exits
-
+- `\q`  : Exits
+- `\conninfo`: Get the connection info
 ---
 
 - `SELECT current_databse();` : Selects the current db
 - `SELECT current_databse();` : You guessed it, selects the current schema
 - `SELECT current_user;` : Selects the current user
 - `SELECT proname FROM pg_catalog.pg_proc;` : Lists all the available functions
-
 ---
-
 - `CREATE DATABASE forum` : Create the db forum
 - `DROP DATABASE forum` : Drop it
-
+- `ALTER USER postgres with PASSWORD '<Your_Password_Goes_Here>'`
 ---
 
 - Some SQL (DDL)
