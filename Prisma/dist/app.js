@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, TrainerType } from "@prisma/client";
 // Can pass an object to look at queires being made. Super cool
 // const prisma = new PrismaClient({ log: ["query"] });
 const prisma = new PrismaClient();
@@ -155,7 +155,7 @@ const prisma = new PrismaClient();
 // });
 // // console.log(trainers);
 // console.log(JSON.stringify(trainers, null, 2));
-// Working with filters
+// // Working with filters
 // // Filter for trainers with no pokemon
 // const trainers = await prisma.trainer.findMany({
 //   where: { pokemon: { none: {} } },
@@ -164,7 +164,7 @@ const prisma = new PrismaClient();
 // const trainers = await prisma.trainer.findMany({
 //   where: { pokemon: { every: { owned: false } } }, // Every pokemon has the property set to ''
 // });
-// Get the first trainer without a pokemon
+// // Get the first trainer without a pokemon
 // const trainer = await prisma.trainer.findFirst({
 //   where: { pokemon: { none: {} } },
 // });
@@ -190,7 +190,7 @@ const prisma = new PrismaClient();
 //     owner: true,
 //   },
 // });
-// Retrieving all pokemon that dont have any moves
+// // Retrieving all pokemon that dont have any moves
 // console.log("Pokemon without any moves: ", pokemons);
 // // Finding trainers with username that starts with "P"
 // const trainers = await prisma.trainer.findMany({
@@ -217,7 +217,7 @@ const prisma = new PrismaClient();
 //     owner: true,
 //   },
 // });
-// Update a trainer to be verified
+// // Update a trainer to be verified
 // const pokemon = (await prisma.pokemon.findFirst())!; // Can do this to tell TS that it wont be null. Dangerous...
 // console.log("Pokemon to verify: ", pokemon);
 // // Updating the pokemon to be verified
@@ -234,18 +234,57 @@ const prisma = new PrismaClient();
 //     owner: true,
 //   },
 // });
+// const pokemon = await prisma.pokemon.findMany({
+//   where: {
+//     owner: {
+//       is: {
+//         // Grab all pokemon that are verified
+//         verified: true,
+//       },
+//     },
+//   },
+//   include: {
+//     owner: true,
+//   },
+// });
+// console.log(pokemon);
+// Creating TrainerType for a trainer
+// const trainer = await prisma.trainer.create({
+//   data: {
+//     email: "trainerTypeTest@gmail.com",
+//     name: "trainerTypeTest",
+//     username: "typeTest",
+//     trainerType: {
+//       create: {
+//         AceTrainer: true,
+//         BugCatcher: true,
+//         DragonTamer: true,
+//       },
+//     },
+//   },
+//   include: {
+//     trainerType: true,
+//   },
+// });
+// console.log(trainer);
+// // Using Fluent API by chaining properties together
+// const trainerTypes = await prisma.trainer;
+//   .findUnique({
+//     where: {
+//       id: 7,
+//     },
+//   })
+//   .trainerType();
+// const pokemon = await prisma.pokemon.findFirst().owner().trainerType();
+// console.log(trainerTypes);
 const commentbreak = 0;
-const pokemon = await prisma.pokemon.findMany({
-    where: {
-        owner: {
-            isNot: {
-                // Grab all pokemon that are verified
-                verified: false,
-            },
-        },
-    },
-    include: {
-        owner: true,
+// Creating TrainerType for a trainer
+const trainerTypes = await prisma.trainer.create({
+    data: {
+        email: "trainerTypeT@gmail.com",
+        name: "trainerTypeT",
+        username: "typeT",
+        trainerType: [TrainerType.ACE_TRAINER, TrainerType.DRAGON_TAMER],
     },
 });
-console.log(pokemon);
+console.log(trainerTypes);

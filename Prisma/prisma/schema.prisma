@@ -15,28 +15,37 @@ datasource db {
 
 model Trainer {
   // Creates the PK
-  id       Int       @id @default(autoincrement()) @map("trainer_id") // Can column-level change names
-  email    String    @unique
-  username String    @unique
-  name     String
-  verified Boolean   @default(false)
-  pokemon  Pokemon[] // This does not effect database, this is for the client code
+  id          Int           @id @default(autoincrement()) @map("trainer_id") // Can column-level change names
+  email       String        @unique
+  username    String        @unique
+  name        String
+  verified    Boolean       @default(false)
+  pokemon     Pokemon[] // This does not effect database, this is for the client code
+  trainerType TrainerType[]
 
   // Or change in the table-level
   @@map("trainer") // Totally optional for renaming
 }
 
+enum TrainerType {
+  ACE_TRAINER
+  BUG_CATCHER
+  DRAGON_TAMER
+  FISHERMAN
+}
+
 model Pokemon {
-  id        Int            @id @default(autoincrement()) @map("post_id")
+  id        Int      @id @default(autoincrement()) @map("post_id")
   title     String
   body      String
-  owned     Boolean        @default(false)
-  createdAt DateTime       @default(now()) @map("created_at")
-  updatedAt DateTime       @updatedAt @map("updated_at") // @updatedAt is on the Prisma level, not DB level
-  trainerId Int            @map("trainer_id") // This is actually stored in the database (? after type can be used to signify its not required)
+  owned     Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at") // @updatedAt is on the Prisma level, not DB level
+  trainerId Int      @map("trainer_id") // This is actually stored in the database (? after type can be used to signify its not required)
+
   // This describes the relationship to trainer to reference as the FK
-  owner     Trainer        @relation(fields: [trainerId], references: [id], onDelete: Cascade)
-  moves     PokemonMoves[]
+  owner Trainer        @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  moves PokemonMoves[]
 
   @@map("pokemon")
 }
@@ -65,3 +74,14 @@ model PokemonMoves {
   @@unique([pokemonId, moveId]) // Adds unique constraint to surrogate key
   @@map("pokemon_moves")
 }
+
+// model TrainerType {
+//   id        Int     @id @default(autoincrement()) @map("notification_settings_id")
+//   AceTrainer  Boolean @default(true)
+//   BugCatcher Boolean @default(false)
+//   DragonTamer     Boolean @default(false)
+//   trainer   Trainer @relation(fields: [trainerId], references: [id])
+//   trainerId Int     @unique @map("trainer_id")
+
+//   @@map("notification_settings")
+// }

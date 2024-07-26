@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, TrainerType } from "@prisma/client";
 
 // Can pass an object to look at queires being made. Super cool
 // const prisma = new PrismaClient({ log: ["query"] });
@@ -291,4 +291,50 @@ const prisma = new PrismaClient();
 
 // console.log(pokemon);
 
+// Creating TrainerType for a trainer
+// const trainer = await prisma.trainer.create({
+//   data: {
+//     email: "trainerTypeTest@gmail.com",
+//     name: "trainerTypeTest",
+//     username: "typeTest",
+//     trainerType: {
+//       create: {
+//         AceTrainer: true,
+//         BugCatcher: true,
+//         DragonTamer: true,
+//       },
+//     },
+//   },
+//   include: {
+//     trainerType: true,
+//   },
+// });
+
+// console.log(trainer);
+
+// // Using Fluent API by chaining properties together
+// const trainerTypes = await prisma.trainer;
+//   .findUnique({
+//     where: {
+//       id: 7,
+//     },
+//   })
+//   .trainerType();
+
+// const pokemon = await prisma.pokemon.findFirst().owner().trainerType();
+
+// console.log(trainerTypes);
+
 const commentbreak = 0;
+
+// Creating TrainerType for a trainer
+const trainerTypes = await prisma.trainer.create({
+  data: {
+    email: "trainerTypeT@gmail.com",
+    name: "trainerTypeT",
+    username: "typeT",
+    trainerType: [TrainerType.ACE_TRAINER, TrainerType.DRAGON_TAMER],
+  },
+});
+
+console.log(trainerTypes);
