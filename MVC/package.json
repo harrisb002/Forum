@@ -5,6 +5,7 @@
   "main": "dist/app.js",
   "type": "module",
   "scripts": {
+    "seed": "node dist/seed.js",
     "dev": "tsc && node dist/app.js"
   },
   "keywords": [],
