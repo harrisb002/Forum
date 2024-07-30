@@ -1,15 +1,41 @@
 import { Request, Response, NextFunction } from "express";
+import addFormats from "ajv-formats";
+import Ajv from "ajv";
+import { betterAjvErrors } from "@apideck/better-ajv-errors";
 
-const validateUsername = (req: Request, res: Response, next: NextFunction) => {
-  const username = req?.body?.username;
+const ajv = new Ajv();
+addFormats.default(ajv);
 
-  if (!username || username.length < 5 || username.length > 30) {
+const schema = {
+  type: "object",
+  properties: {
+    username: {
+      type: "string",
+      minLength: 5,
+      maxLength: 30,
+    },
+    email: {
+      type: "string",
+      format: "email",
+    },
+  },
+  required: ["username", "email"],
+};
+
+const validate = ajv.compile(schema);
+
+const validateAccount = (req: Request, res: Response, next: NextFunction) => {
+  const valid = validate(req.body);
+
+  if (!valid) {
     res.status(400).json({
-      error: "Username must be between 5 and 30 characters",
+      error: "Invalid request body",
+      details: validate.errors,
     });
-    return; // don't invoke next after response is sent
+    return;
   }
+
   next();
 };
 
-export default { validateUsername };
+export default { validateAccount };
