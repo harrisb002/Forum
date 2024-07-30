@@ -28,9 +28,15 @@ const validateAccount = (req: Request, res: Response, next: NextFunction) => {
   const valid = validate(req.body);
 
   if (!valid) {
+    const betterErrors = betterAjvErrors({
+      schema,
+      data: req.body,
+      errors: validate.errors,
+      basePath: "",
+    });
+
     res.status(400).json({
-      error: "Invalid request body",
-      details: validate.errors,
+      error: betterErrors,
     });
     return;
   }
