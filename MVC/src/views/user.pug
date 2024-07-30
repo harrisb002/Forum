@@ -1,15 +1,15 @@
-html 
-    head 
-        title= `User:${user.username}`
-    body 
-        h1 User Details 
-        p 
-            strong Username: 
-            #{user.username}
+//- html 
+//-     head 
+//-         title= `User:${user.username}`
+//-     body 
+//-         h1 User Details 
+//-         p 
+//-             strong Username: 
+//-             #{user.username}
 
-        if user.posts && user.posts.length > 0
-            h2 Posts by #{user.username}
-            ul 
-                each post in user.posts 
-                    li 
-                        a(href=`/post/${post.id}`)=post.title
+//-         if user.posts && user.posts.length > 0
+//-             h2 Posts by #{user.username}
+//-             ul 
+//-                 each post in user.posts 
+//-                     li 
+//-                         a(href=`/post/${post.id}`)=post.title

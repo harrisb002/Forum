@@ -1,12 +1,10 @@
 import express from "express";
 import usersRouter from "./routes/users.js";
-import pug from 'pug';
+import logging from "./middleware/logging.js";
 const app = express();
 const port = 3000;
-app.engine('pug', pug.__express);
-app.set("view engine", "pug");
-app.set("views", "./src/views");
+app.use(logging.logRequest);
 app.use("/users", usersRouter);
 app.listen(port, () => {
-    console.log(`App listening http://localhost:${port}.`);
+    console.log(`Example app listening on port ${port}`);
 });

@@ -1,10 +1,25 @@
-import User from '../models/users.js';
+import prisma from "../prisma.js";
 const getMany = async (req, res) => {
-    const users = await User.getMany();
-    res.render('users', { users });
+    const users = await prisma.user.findMany();
+    res.json({ users });
 };
 const get = async (req, res) => {
-    const user = await User.get(Number.parseInt(req.params.id));
-    res.render('user', { user });
+    const user = await prisma.user.findFirst({
+        where: { id: parseInt(req.params.id) },
+        include: {
+            posts: true,
+        },
+    });
+    if (!user) {
+        res.json({ error: "User not found" });
+        return;
+    }
+    res.json({ user });
 };
-export default { getMany, get };
+const create = async (req, res) => {
+    const user = await prisma.user.create({
+        data: { email: req.body.email, username: req.body.username },
+    });
+    res.status(201).json({ user });
+};
+export default { get, getMany, create };
